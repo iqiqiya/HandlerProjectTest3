@@ -1,5 +1,7 @@
 package iqiqiya.lanlana.handlerprojecttest3;
 
+import android.content.Context;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +18,8 @@ import com.facebook.drawee.controller.AbstractDraweeController;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.Random;
 
@@ -55,6 +59,7 @@ public class DiglettActivity extends AppCompatActivity implements View.OnClickLi
     public static final int MAX_COUNT = 120;
 
     private DiglettHandler mhandler = new DiglettHandler(this);
+    private Button headsetplay;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,7 +80,6 @@ public class DiglettActivity extends AppCompatActivity implements View.OnClickLi
         // 设置Controller
         huaji_img.setController(mDraweeController);
 
-
         initView();
         setTitle("快来打地鼠");
     }
@@ -87,7 +91,14 @@ public class DiglettActivity extends AppCompatActivity implements View.OnClickLi
         mStartButton.setOnClickListener(this);
         mDiglettImageView.setOnTouchListener(this);
 
+        headsetplay = findViewById(R.id.headsetplay);
 
+        headsetplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playLocalFile();
+            }
+        });
     }
 
     @Override
@@ -171,5 +182,27 @@ public class DiglettActivity extends AppCompatActivity implements View.OnClickLi
         mDiglettImageView.setVisibility(View.GONE);
         mStartButton.setText("点击开始");
         mStartButton.setEnabled(true);
+    }
+
+    private MediaPlayer mMediaPlayer;
+    private void playLocalFile() {
+    mMediaPlayer = MediaPlayer.create(this,R.raw.backmusic);
+
+    //播放工程res目录下的raw目录中的音乐文件in_call_alarm
+    try {
+        mMediaPlayer.prepare();
+    } catch (IllegalStateException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    mMediaPlayer.start();
+    // headsetplay.setEnabled(false);
+    mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        public void onCompletion(MediaPlayer mp) {
+            //播完了接着播或者关闭mMediaPlayer
+            mMediaPlayer.stop();
+        }
+        });
     }
 }

@@ -21,6 +21,14 @@
         android:layout_centerHorizontal="true"
         android:text="@string/bejin_game" />
 
+    <Button
+        android:id="@+id/headsetplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/start_button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/bejingyinyue" />
+
     <TextView
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
