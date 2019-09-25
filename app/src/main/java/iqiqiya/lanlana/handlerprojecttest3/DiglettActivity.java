@@ -1,15 +1,20 @@
 package iqiqiya.lanlana.handlerprojecttest3;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.AbstractDraweeController;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.lang.ref.WeakReference;
 import java.util.Random;
@@ -54,7 +59,22 @@ public class DiglettActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Fresco.initialize(this);// 初始化在加载布局的上边
+
         setContentView(R.layout.activity_diglett);
+
+       // 加载滑稽.gif
+        SimpleDraweeView huaji_img = this.findViewById(R.id.huaji_img);
+        DraweeController mDraweeController = Fresco.newDraweeControllerBuilder()
+                .setAutoPlayAnimations(true)
+                // 设置uri,加载本地的huaji.gif
+                .setUri(Uri.parse("res://"+getPackageName()+"/"+R.drawable.huaji))
+                .build();
+
+        // 设置Controller
+        huaji_img.setController(mDraweeController);
+
 
         initView();
         setTitle("快来打地鼠");
@@ -66,6 +86,8 @@ public class DiglettActivity extends AppCompatActivity implements View.OnClickLi
         mStartButton = findViewById(R.id.start_button);
         mStartButton.setOnClickListener(this);
         mDiglettImageView.setOnTouchListener(this);
+
+
     }
 
     @Override
